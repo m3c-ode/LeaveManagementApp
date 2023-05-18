@@ -19,7 +19,7 @@ namespace LeaveManagement.Web.Controllers
             return View();
         }
 
-        [Authorize ]
+        [Authorize]
         public IActionResult Privacy()
         {
             return View();
