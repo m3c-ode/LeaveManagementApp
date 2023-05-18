@@ -90,9 +90,9 @@ namespace LeaveManagement.Web.Areas.Identity.Pages.Account
             //Annotation to validate input
             [DataType(DataType.Date)]
             [Display(Name = "Date of Birth")]
-            public DateTime DateOfBirth { get; set; }
+            public DateTime? DateOfBirth { get; set; }
             [DataType(DataType.Date)]
-            public DateTime DateJoined { get; set; }
+            public DateTime? DateJoined { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -133,8 +133,8 @@ namespace LeaveManagement.Web.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                user.DateJoined = Input.DateJoined;
-                user.DateOfBirth = Input.DateOfBirth;
+                user.DateJoined = Input.DateJoined ?? default;
+                user.DateOfBirth = Input.DateOfBirth ?? default;
 
                 //CreateAsync will hash the password for us.
                 var result = await _userManager.CreateAsync(user, Input.Password);

@@ -8,6 +8,7 @@
         Task<int> GetCountAsync();
         Task<bool> Exists(int id);
         Task<T> AddAsync(T entity);
+        Task AddRangeAsync(List<T> entities);
         Task DeleteAsync(int id);
         Task UpdateAsync(T entity);
 

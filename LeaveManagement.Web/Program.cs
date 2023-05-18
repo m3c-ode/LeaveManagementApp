@@ -1,6 +1,7 @@
 using LeaveManagement.Web.Configurations;
 using LeaveManagement.Web.Contracts;
 using LeaveManagement.Web.Data;
+using LeaveManagement.Web.Repositories___Services;
 using LeaveManagement.Web.Services;
 using LeaveManagement.Web.Services_Repositories;
 using Microsoft.AspNetCore.Identity;
@@ -23,6 +24,7 @@ builder.Services.AddTransient<IEmailSender>(option => new EmailSender("localhost
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
+builder.Services.AddScoped<ILeaveAllocationRepository, LeaveAllocationRepository>();
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 

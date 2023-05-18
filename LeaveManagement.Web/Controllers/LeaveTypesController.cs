@@ -19,12 +19,17 @@ namespace LeaveManagement.Web.Controllers
     {
         private readonly ILeaveTypeRepository leaveTypeRepository;
         private readonly IMapper mapper;
+        private readonly ILeaveAllocationRepository leaveAllocationRepository;
 
         //Copies the context into th Controller for intereaction with DB = dependancy injection
-        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, IMapper mapper)
+        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, 
+            IMapper mapper,
+            ILeaveAllocationRepository leaveAllocationRepository
+            )
         {
             this.leaveTypeRepository = leaveTypeRepository;
             this.mapper = mapper;
+            this.leaveAllocationRepository = leaveAllocationRepository;
         }
 
         // GET: LeaveTypes
@@ -161,6 +166,15 @@ namespace LeaveManagement.Web.Controllers
         {
             //return (_context.LeaveTypes?.Any(e => e.Id == id)).GetValueOrDefault();
             return await leaveTypeRepository.Exists(id);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AllocateLeave (int id)
+        {
+            await leaveAllocationRepository.LeaveAllocation(id);
+            return RedirectToAction(nameof(Index));
+
         }
     }
 }
