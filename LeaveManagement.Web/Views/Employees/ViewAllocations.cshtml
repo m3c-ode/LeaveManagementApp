@@ -10,28 +10,28 @@
     <h4>EmployeeAllocationVM</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.LastName)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.LastName)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DateJoined)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateJoined)
         </dd>
     </dl>
@@ -47,16 +47,19 @@
         {
             @*<li class="list-group-item">@allocation.LeaveType.Name <span class="badge badge-pill badge-primary">@allocation.NumberOfDays</span></li>*@
             <li class="list-group-item">
-                @allocation.LeaveType.Name <button type="button" class="btn btn-primary">
-                    Allocated Days <span class="badge bg-secondary">@allocation.LeaveType.DefaultDays</span>
+                <span class="" style="display: inline-block; min-width: 100px;">
+                    @allocation.LeaveType.Name
+                </span>
+                <button type="button" class="btn btn-primary">
+                    Allocated Days<span class="badge bg-secondary">@allocation.LeaveType.DefaultDays</span>
                 </button>
                 <button type="button" class="btn btn-primary">
                     Remaining Days <span class="badge text-bg-light">@allocation.NumberOfDays</span>
                 </button>
             </li>
-            
+
         }
-@*        <li class="list-group-item">Dapibus ac facilisis in</li>
+        @*        <li class="list-group-item">Dapibus ac facilisis in</li>
         <li class="list-group-item">Vestibulum at eros</li>*@
     </ul>
 </div>
