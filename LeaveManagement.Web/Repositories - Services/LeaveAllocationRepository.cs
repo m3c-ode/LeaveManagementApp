@@ -51,6 +51,22 @@ namespace LeaveManagement.Web.Repositories___Services
 
         }
 
+        public async Task<LeaveAllocationEditVM> GetEmployeeAllocation (int id)
+        {
+            var allocation = await context.LeaveAllocations
+                .Include(q => q.LeaveType)
+                .FirstOrDefaultAsync(q => q.Id == id);
+            if (allocation == null)
+            {
+                return null;
+            }
+
+            var employee = await userManager.FindByIdAsync (allocation.EmployeeId);
+            var leaveAllocationEditVM = mapper.Map<LeaveAllocationEditVM>(allocation);
+            leaveAllocationEditVM.Employee = mapper.Map<EmployeesListVM>(employee);
+            return leaveAllocationEditVM;
+        }
+
         public async Task LeaveAllocation(int leaveTypeId)
         {
             var employees = await userManager.GetUsersInRoleAsync(Roles.User);

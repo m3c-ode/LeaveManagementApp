@@ -22,6 +22,5 @@ namespace LeaveManagement.Web.Data
 
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
-        //public DbSet<LeaveManagement.Web.Models.EmployeeAllocationVM> EmployeeAllocationVM { get; set; } = default!;
     }
 }
