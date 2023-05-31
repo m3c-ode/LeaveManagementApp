@@ -8,5 +8,7 @@ namespace LeaveManagement.Web.Contracts
         Task CreateLeaveRequest(LeaveRequestCreateVM model);
         Task<EmployeeLeaveRequestViewVM> GetMyLeaveRequestDetails();
         Task<List<LeaveRequest>> GetEmployeeRequestsAsync(string employeeId);
+        Task<AdminLeaveRequestViewVM> GetAdminLeaveRequestList ();
+
     }
 }

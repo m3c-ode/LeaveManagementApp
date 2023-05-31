@@ -15,5 +15,8 @@ namespace LeaveManagement.Web.Models
         public DateTime DateCreated { get; set; }
         [Display(Name ="Leave Type")]
         public LeaveTypeVM? LeaveType { get; set; }
+
+        public EmployeesListVM Employee { get; set; }
+        //public string? RequestingEmployeeId { get; set; }
     }
 }

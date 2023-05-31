@@ -41,6 +41,25 @@ namespace LeaveManagement.Web.Repositories___Services
             await AddAsync(leaveRequest);
         }
 
+        public async Task<AdminLeaveRequestViewVM> GetAdminLeaveRequestList()
+        {
+            //var leaveRequests = await GetAllAsync();
+            var leaveRequests = await context.LeaveRequests.Include(q => q.LeaveType).ToListAsync();
+            var model = new AdminLeaveRequestViewVM
+            {
+                TotalRequests = leaveRequests.Count,
+                ApprovedRequests = leaveRequests.Count(q => q.Approved == true),
+                PendingRequests = leaveRequests.Count(q => q.Approved == null),
+                RejectedRequests = leaveRequests.Count(q => q.Approved == false),
+                LeaveRequests = mapper.Map<List<LeaveRequestVM>>(leaveRequests),
+            };
+            foreach (var item in model.LeaveRequests)
+            {
+                item.Employee = mapper.Map<EmployeesListVM>(await userManager.FindByIdAsync(item.RequestingEmployeeId));
+            }
+            return model;
+        }
+
         public async Task<List<LeaveRequest>> GetEmployeeRequestsAsync(string employeeId)
         {
             return await context.LeaveRequests
