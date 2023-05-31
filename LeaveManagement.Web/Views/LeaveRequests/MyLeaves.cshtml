@@ -1,0 +1,120 @@
+﻿@model EmployeeLeaveRequestViewVM
+
+@{
+    ViewData["Title"] = "My Leaves";
+}
+
+<div class="card" style="width: 100%;">
+    <div class="card-header">
+        <h2>Leave Allocations</h2>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="row">
+                <div class="col">Leave Name</div>
+                <div class="col">Original Allocation</div>
+                <div class="col">Current Allocation</div>
+            </div>
+        </li>
+        @foreach (var allocation in Model.LeaveAllocations)
+        {
+            @*<li class="list-group-item">@allocation.LeaveType.Name <span class="badge badge-pill badge-primary">@allocation.NumberOfDays</span></li>*@
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col">
+                        <span class="" style="display: inline-block; min-width: 100px;">
+                            @allocation.LeaveType.Name
+                        </span>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary">
+                            Allocated Days<span class="badge bg-secondary">@allocation.LeaveType.DefaultDays</span>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button type="button" class="btn btn-primary">
+                            Remaining Days <span class="badge text-bg-light">@allocation.NumberOfDays</span>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <a class="btn btn-warning" asp-action="EditAllocation" asp-route-id="@allocation.Id"><i class="fa-regular fa-pen-to-square"></i>Edit Allocation</a> &nbsp;
+                    </div>
+                </div>
+
+
+
+
+            </li>
+
+        }
+        @*        <li class="list-group-item">Dapibus ac facilisis in</li>
+        <li class="list-group-item">Vestibulum at eros</li>*@
+    </ul>
+</div>
+
+<hr />
+
+<h2>Current Requests</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].LeaveType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].Approved)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.LeaveRequests)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td>
+                    @if (item.Cancelled)
+                    {
+                        <span class="badge text-bg-secondary">Cancelled</span>
+
+                    }
+                    else if(item.Approved == null)
+                    {
+                        <span class="badge text-bg-warning">Pending</span>
+                    }
+                    else if(item.Approved.Value)
+                    {
+                        <span class="badge text-bg-success">Approved</span>
+                    }else if(!item.Approved.Value)
+                    {
+                        <span class="badge text-bg-danger">Rejected</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Cancel" class="btn btn-danger btn-sm" asp-route-id="@item.Id">Cancel Request</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

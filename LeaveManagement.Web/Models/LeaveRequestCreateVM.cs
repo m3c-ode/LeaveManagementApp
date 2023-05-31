@@ -10,7 +10,7 @@ namespace LeaveManagement.Web.Models
 {
     public class LeaveRequestCreateVM: IValidatableObject
     {
-        public int Id { get; set; }
+        
         [Required]
         [DisplayName("Start Date")]
         public DateTime? StartDate { get; set; }
