@@ -31,6 +31,36 @@ namespace LeaveManagement.Web.Repositories___Services
             //Check if accepted
         }
 
+        public async Task ChangeRequestApproval(int leaveRequestId, bool approved)
+        {
+            //get leaveRequests
+            var leaveRequest = await GetAsync(leaveRequestId);
+            if (leaveRequest == null)
+            {
+               
+
+            }
+            leaveRequest.Approved = approved;
+            if (approved)
+            {
+                //leaveRequest.Approved = true;
+                leaveRequest.Cancelled = false;
+                //make the opration on day deduction
+                var allocation = await leaveAllocationRepository.GetEmployeeAllocation(leaveRequest.RequestingEmployeeId, leaveRequest.LeaveTypeId);
+                var daysRequested = (int)(leaveRequest.EndDate - leaveRequest.StartDate).TotalDays;
+                allocation.NumberOfDays -= daysRequested;
+                await leaveAllocationRepository.UpdateAsync(allocation);
+
+
+            }
+            else if(!approved)
+            {
+                //leaveRequest.Approved = false;
+                leaveRequest.Cancelled = true;
+            }
+                await UpdateAsync(leaveRequest);
+        }
+
         public async Task CreateLeaveRequest(LeaveRequestCreateVM model)
         {
             var user = await userManager.GetUserAsync(httpContextAccessor?.HttpContext?.User);
@@ -67,6 +97,22 @@ namespace LeaveManagement.Web.Repositories___Services
                 .ToListAsync();
         }
 
+        public async Task<LeaveRequestVM?> GetLeaveRequestAsync(int? id)
+        {
+            var leaveReq = await context.LeaveRequests
+                .Include(q => q.LeaveType)
+                .Include(l => l.RequestingEmployee)
+                .FirstOrDefaultAsync(q => q.Id == id);
+            if (leaveReq == null)
+            {
+                return null;
+            }
+            var model = mapper.Map<LeaveRequestVM>(leaveReq);
+            //is this line necessary? already inlcuded requesting employee, to double check
+            model.Employee = mapper.Map<EmployeesListVM>(await userManager.FindByIdAsync(leaveReq?.RequestingEmployeeId));
+            return model;
+        }
+
         public async Task<EmployeeLeaveRequestViewVM> GetMyLeaveRequestDetails()
         {
             var user = await userManager.GetUserAsync(httpContextAccessor?.HttpContext?.User);
@@ -76,6 +122,10 @@ namespace LeaveManagement.Web.Repositories___Services
             var model = new EmployeeLeaveRequestViewVM(allocations, requests);
 
             return model;
+        }
+
+        public async Task CancelRequest (int id)
+        {
 
         }
     }

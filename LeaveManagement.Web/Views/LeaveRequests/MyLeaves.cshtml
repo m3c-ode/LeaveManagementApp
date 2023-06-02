@@ -14,6 +14,7 @@
                 <div class="col">Leave Name</div>
                 <div class="col">Original Allocation</div>
                 <div class="col">Current Allocation</div>
+                <div class="col">Action</div>
             </div>
         </li>
         @foreach (var allocation in Model.LeaveAllocations)
@@ -23,7 +24,7 @@
                 <div class="row">
                     <div class="col">
                         <span class="" style="display: inline-block; min-width: 100px;">
-                            @allocation.LeaveType.Name
+                            <strong>@allocation.LeaveType.Name</strong>
                         </span>
                     </div>
                     <div class="col">
@@ -93,12 +94,7 @@
                     @Html.DisplayFor(modelItem => item.DateCreated)
                 </td>
                 <td>
-                    @if (item.Cancelled)
-                    {
-                        <span class="badge text-bg-secondary">Cancelled</span>
-
-                    }
-                    else if(item.Approved == null)
+                    @if(item.Approved == null)
                     {
                         <span class="badge text-bg-warning">Pending</span>
                     }
@@ -108,6 +104,11 @@
                     }else if(!item.Approved.Value)
                     {
                         <span class="badge text-bg-danger">Rejected</span>
+                    }
+                    else if (item.Cancelled)
+                    {
+                        <span class="badge text-bg-secondary">Cancelled</span>
+
                     }
                 </td>
                 <td>

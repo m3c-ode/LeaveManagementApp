@@ -27,14 +27,19 @@ namespace LeaveManagement.Web.Controllers
             _context = context;
             this.leaveRequestRepository = leaveRequestRepository;
         }
-        [Authorize(Roles = Roles.Administrator)]
         // GET: LeaveRequests
+        [Authorize(Roles = Roles.Administrator)]
         public async Task<IActionResult> Index()
         {
             var model = await leaveRequestRepository.GetAdminLeaveRequestList();
             return View(model);
             //var applicationDbContext = _context.LeaveRequests.Include(l => l.LeaveType).Include(l => l.RequestingEmployee);
             //return View(await applicationDbContext.ToListAsync());
+        }
+
+        public async Task Cancel (int id)
+        {
+
         }
 
         public async Task<ActionResult> MyLeaves()
@@ -46,21 +51,29 @@ namespace LeaveManagement.Web.Controllers
         // GET: LeaveRequests/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.LeaveRequests == null)
+            var model = await leaveRequestRepository.GetLeaveRequestAsync(id);
+            if (model == null)
             {
                 return NotFound();
             }
 
-            var leaveRequest = await _context.LeaveRequests
-                .Include(l => l.LeaveType)
-                .Include(l => l.RequestingEmployee)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (leaveRequest == null)
-            {
-                return NotFound();
-            }
+            return View(model);
+        }
 
-            return View(leaveRequest);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangeRequestApproval(int id, bool approved)
+        {
+            try
+            {
+            await leaveRequestRepository.ChangeRequestApproval(id, approved);
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: LeaveRequests/Create
@@ -87,7 +100,7 @@ namespace LeaveManagement.Web.Controllers
                 if (ModelState.IsValid)
                 {
                     await leaveRequestRepository.CreateLeaveRequest(leaveRequestVM);
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(MyLeaves));
                 }
             }
             catch (Exception ex)

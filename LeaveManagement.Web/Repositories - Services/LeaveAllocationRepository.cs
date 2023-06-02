@@ -51,11 +51,11 @@ namespace LeaveManagement.Web.Repositories___Services
 
         }
 
-        public async Task<LeaveAllocationEditVM> GetEmployeeAllocation (int id)
+        public async Task<LeaveAllocationEditVM> GetEmployeeAllocation (int allocationId)
         {
             var allocation = await context.LeaveAllocations
                 .Include(q => q.LeaveType)
-                .FirstOrDefaultAsync(q => q.Id == id);
+                .FirstOrDefaultAsync(q => q.Id == allocationId);
             if (allocation == null)
             {
                 return null;
@@ -102,6 +102,11 @@ namespace LeaveManagement.Web.Repositories___Services
             allocation.NumberOfDays = model.NumberOfDays;
             await UpdateAsync(allocation);
             return true;
+        }
+
+        public async Task<LeaveAllocation?> GetEmployeeAllocation(string employeeId, int leaveTypeId)
+        {
+            return await context.LeaveAllocations.FirstOrDefaultAsync(q => q.EmployeeId == employeeId && q.LeaveTypeId == leaveTypeId);
         }
     }
 }

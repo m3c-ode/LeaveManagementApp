@@ -89,12 +89,7 @@
                     @Html.DisplayFor(modelItem => item.LeaveType.Name)
                 </td>
                 <td>
-                    @if (item.Cancelled)
-                    {
-                        <span class="badge text-bg-secondary">Cancelled</span>
-
-                    }
-                    else if (item.Approved == null)
+                    @if (item.Approved == null)
                     {
                         <span class="badge text-bg-warning">Pending</span>
                     }
@@ -105,6 +100,10 @@
                     else if (!item.Approved.Value)
                     {
                         <span class="badge text-bg-danger">Rejected</span>
+                    }
+                    else if (item.Cancelled)
+                    {
+                        <span class="badge text-bg-secondary">Cancelled</span>
                     }
                 </td>
                 <td>
