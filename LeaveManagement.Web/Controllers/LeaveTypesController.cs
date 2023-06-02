@@ -130,25 +130,6 @@ namespace LeaveManagement.Web.Controllers
             return View(leaveTypeVM);
         }
 
-        //Noot being used for now
-        // GET: LeaveTypes/Delete/5
-        //public async Task<IActionResult> Delete(int? id)
-        //{
-        //    if (id == null || _context.LeaveTypes == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    var leaveType = await _context.LeaveTypes
-        //        .FirstOrDefaultAsync(m => m.Id == id);
-        //    if (leaveType == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return View(leaveType);
-        //}
-
         // POST: LeaveTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

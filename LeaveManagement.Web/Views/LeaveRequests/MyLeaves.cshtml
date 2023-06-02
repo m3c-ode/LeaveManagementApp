@@ -112,10 +112,40 @@
                     }
                 </td>
                 <td>
-                    <a asp-action="Cancel" class="btn btn-danger btn-sm" asp-route-id="@item.Id">Cancel Request</a>
+                    @*<a asp-action="Cancel" class="btn btn-danger btn-sm" asp-route-id="@item.Id">Cancel Request</a>*@
+                    <button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button">Cancel Request</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<form id="deleteForm" asp-action="Cancel">
+    <input type="hidden" id="leaveRequestId" name="Id" />
+</form>
+
+@section Scripts {
+    <script>
+        $(function () {
+            $(".deleteBtn").click(function (e) {
+                swal({
+                    title: 'Canceling Request',
+                    text: "Are you sure you want to cancel this request?",
+                    icon: 'warning',
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if (confirm) {
+                        //alert("You said yes")
+                        var btn = $(this);
+                        var id = btn.data("id")
+                        $("#leaveRequestId").val(id);
+                        $("#deleteForm").submit();
+
+                    }
+                })
+            })
+        })
+    </script>
+}
 

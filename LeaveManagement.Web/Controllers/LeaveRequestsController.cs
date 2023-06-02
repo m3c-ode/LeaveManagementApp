@@ -187,23 +187,25 @@ namespace LeaveManagement.Web.Controllers
             return View(leaveRequest);
         }
 
-        // POST: LeaveRequests/Delete/5
-        [HttpPost, ActionName("Delete")]
+        // POST: LeaveRequests/Cancel/5
+        [HttpPost, ActionName("Cancel")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.LeaveRequests == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.LeaveRequests'  is null.");
-            }
-            var leaveRequest = await _context.LeaveRequests.FindAsync(id);
-            if (leaveRequest != null)
-            {
-                _context.LeaveRequests.Remove(leaveRequest);
-            }
+            //if (_context.LeaveRequests == null)
+            //{
+            //    return Problem("Entity set 'ApplicationDbContext.LeaveRequests'  is null.");
+            //}
+            //var leaveRequest = await _context.LeaveRequests.FindAsync(id);
+            //if (leaveRequest != null)
+            //{
+            //    _context.LeaveRequests.Remove(leaveRequest);
+            //}
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            //await _context.SaveChangesAsync();
+            await leaveRequestRepository.DeleteAsync(id);
+
+            return RedirectToAction(nameof(MyLeaves));
         }
 
         private bool LeaveRequestExists(int id)
