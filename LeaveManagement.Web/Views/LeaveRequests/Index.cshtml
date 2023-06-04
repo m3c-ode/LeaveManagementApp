@@ -29,7 +29,6 @@
             <div class="card-body">
                 <h2 class="card-title text-warning">@Model.PendingRequests</h2>
                 <p class="card-text">@Html.DisplayNameFor(m => m.PendingRequests)</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>
         </div>
     </div>
@@ -38,7 +37,7 @@
             <div class="card-body">
                 <h2 class="card-title text-danger">@Model.RejectedRequests</h2>
                 <p class="card-text">@Html.DisplayNameFor(m => m.RejectedRequests)</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                @*<a href="#" class="btn btn-primary">Go somewhere</a>*@
             </div>
         </div>
     </div>
@@ -49,6 +48,7 @@
 <hr />
 
 <table class="table">
+    <h3>Pending Requests</h3>
     <thead>
         <tr>
             <th>
@@ -73,51 +73,122 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.LeaveRequests)
+        @foreach (var item in Model.LeaveRequests.Where(item => item.Approved == null))
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Employee.FirstName) @Html.DisplayFor(modelItem => item.Employee.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LeaveType.Name)
-                </td>
-                <td>
-                    @if (item.Approved == null)
-                    {
-                        <span class="badge text-bg-warning">Pending</span>
-                    }
-                    else if (item.Approved.Value)
-                    {
-                        <span class="badge text-bg-success">Approved</span>
-                    }
-                    else if (!item.Approved.Value)
-                    {
-                        <span class="badge text-bg-danger">Rejected</span>
-                    }
-                    else if (item.Cancelled)
-                    {
-                        <span class="badge text-bg-secondary">Cancelled</span>
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateCreated)
-                </td>
-                <td>
-                    @if (!item.Cancelled)
-                    {
-
-                        <a asp-action="Details" class="btn btn-warning btn-sm" asp-route-id="@item.Id">Details</a>
-                    }
-
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Employee.FirstName) @Html.DisplayFor(modelItem => item.Employee.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeaveType.Name)
+            </td>
+            <td>
+                @if (item.Approved == null)
+                {
+                    <span class="badge text-bg-warning">Pending</span>
+                }
+                else if (item.Approved.Value)
+                {
+                    <span class="badge text-bg-success">Approved</span>
+                }
+                else if (!item.Approved.Value)
+                {
+                    <span class="badge text-bg-danger">Rejected</span>
+                }
+                else if (item.Cancelled)
+                {
+                    <span class="badge text-bg-secondary">Cancelled</span>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                <a asp-action="Details" class="btn btn-warning btn-sm" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
+<br />
+<br />
+<hr />
+<br />
+<table class="table">
+    <h3>Requests Reviewed</h3>
+    <thead>
+        <tr>
+            <th>
+                Employee Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].LeaveType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].Approved)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LeaveRequests[0].DateCreated)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        
+        @foreach (var item in Model.LeaveRequests.Where(item => item.Approved != null))
+        {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.FirstName) @Html.DisplayFor(modelItem => item.Employee.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EndDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LeaveType.Name)
+                    </td>
+                    <td>
+                        @if (item.Approved == null)
+                        {
+                            <span class="badge text-bg-warning">Pending</span>
+                        }
+                        else if (item.Approved.Value)
+                        {
+                            <span class="badge text-bg-success">Approved</span>
+                        }
+                        else if (!item.Approved.Value)
+                        {
+                            <span class="badge text-bg-danger">Rejected</span>
+                        }
+                        else if (item.Cancelled)
+                        {
+                            <span class="badge text-bg-secondary">Cancelled</span>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateCreated)
+                    </td>
+                    <td>
+                        <a asp-action="Details" class="btn btn-warning btn-sm" asp-route-id="@item.Id">Details</a>
+                    </td>
+                </tr>
+            }
+    </tbody>
+</table>
+
+
