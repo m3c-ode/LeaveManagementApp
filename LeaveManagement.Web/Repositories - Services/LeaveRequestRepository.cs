@@ -5,6 +5,7 @@ using LeaveManagement.Web.Models;
 using LeaveManagement.Web.Services_Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LeaveManagement.Web.Repositories___Services
 {
@@ -61,14 +62,29 @@ namespace LeaveManagement.Web.Repositories___Services
                 await UpdateAsync(leaveRequest);
         }
 
-        public async Task CreateLeaveRequest(LeaveRequestCreateVM model)
+        public async Task<bool> CreateLeaveRequest(LeaveRequestCreateVM model)
         {
             var user = await userManager.GetUserAsync(httpContextAccessor?.HttpContext?.User);
+
+            //Check if allocation allows taking number of days. Get employee leave alloc, compare days, return boolean
+            var allocation = await leaveAllocationRepository.GetEmployeeAllocation(model.RequestingEmployeeId, model.LeaveTypeId);
+            //check is allocation is null
+            if (allocation == null)
+            {
+                return false;
+            }
+            var numberOfDays = (int)(model.EndDate.Value - model.StartDate.Value).TotalDays;
+            if (numberOfDays > allocation.NumberOfDays)
+            {
+                return false;
+            }
+
             var leaveRequest = mapper.Map<LeaveRequest>(model);
             leaveRequest.DateCreated = DateTime.Now;
             leaveRequest.RequestingEmployeeId = user.Id;
             
             await AddAsync(leaveRequest);
+            return true;
         }
 
         public async Task<AdminLeaveRequestViewVM> GetAdminLeaveRequestList()
@@ -126,7 +142,9 @@ namespace LeaveManagement.Web.Repositories___Services
 
         public async Task CancelRequest (int id)
         {
-
+            var leaveReq = await GetAsync(id);
+            leaveReq.Cancelled = true;
+            await UpdateAsync(leaveReq);
         }
     }
 }

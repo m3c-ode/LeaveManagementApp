@@ -82,10 +82,10 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StartDate)
+                    @(item.StartDate.HasValue ? @item.StartDate.Value.ToString("MM/dd/yyyy") : "")
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.EndDate)
+                    @(item.EndDate.HasValue ? @item.EndDate.Value.ToString("MM/dd/yyyy") : "")
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.LeaveType.Name)
@@ -94,14 +94,15 @@
                     @Html.DisplayFor(modelItem => item.DateCreated)
                 </td>
                 <td>
-                    @if(item.Approved == null)
+                    @if (item.Approved == null)
                     {
                         <span class="badge text-bg-warning">Pending</span>
                     }
-                    else if(item.Approved.Value)
+                    else if (item.Approved.Value)
                     {
                         <span class="badge text-bg-success">Approved</span>
-                    }else if(!item.Approved.Value)
+                    }
+                    else if (!item.Approved.Value)
                     {
                         <span class="badge text-bg-danger">Rejected</span>
                     }
@@ -113,16 +114,20 @@
                 </td>
                 <td>
                     @*<a asp-action="Cancel" class="btn btn-danger btn-sm" asp-route-id="@item.Id">Cancel Request</a>*@
-                    <button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button">Cancel Request</button>
+                    @if (item.Approved == null)
+                    {
+                        <form id="deleteForm" asp-action="Cancel">
+                            <input type="hidden" id="leaveRequestId" name="Id" @*asp-form="@item.Id"*@ />
+                            <button data-id="@item.Id" class="btn btn-danger btn-sm deleteBtn" type="button">Cancel Request</button>
+                        </form>
+                    }
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<form id="deleteForm" asp-action="Cancel">
-    <input type="hidden" id="leaveRequestId" name="Id" />
-</form>
+
 
 @section Scripts {
     <script>

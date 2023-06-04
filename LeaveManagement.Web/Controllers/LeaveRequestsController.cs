@@ -36,9 +36,20 @@ namespace LeaveManagement.Web.Controllers
             //var applicationDbContext = _context.LeaveRequests.Include(l => l.LeaveType).Include(l => l.RequestingEmployee);
             //return View(await applicationDbContext.ToListAsync());
         }
-
-        public async Task Cancel (int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(int id)
         {
+            //We don't delete the request, just add cancelled flag
+            try
+            {
+                await leaveRequestRepository.CancelRequest(id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return RedirectToAction(nameof(MyLeaves));
 
         }
 
@@ -66,7 +77,7 @@ namespace LeaveManagement.Web.Controllers
         {
             try
             {
-            await leaveRequestRepository.ChangeRequestApproval(id, approved);
+                await leaveRequestRepository.ChangeRequestApproval(id, approved);
 
             }
             catch (Exception ex)
@@ -99,8 +110,12 @@ namespace LeaveManagement.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await leaveRequestRepository.CreateLeaveRequest(leaveRequestVM);
-                    return RedirectToAction(nameof(MyLeaves));
+                    var isReqValid = await leaveRequestRepository.CreateLeaveRequest(leaveRequestVM);
+                    if (isReqValid)
+                    {
+                        return RedirectToAction(nameof(MyLeaves));
+                    }
+                    ModelState.AddModelError(string.Empty, "Allocation limit is exceeded with this request");
                 }
             }
             catch (Exception ex)
@@ -187,8 +202,8 @@ namespace LeaveManagement.Web.Controllers
             return View(leaveRequest);
         }
 
-        // POST: LeaveRequests/Cancel/5
-        [HttpPost, ActionName("Cancel")]
+        // POST: LeaveRequests/Delete/5
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
