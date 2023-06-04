@@ -13,9 +13,13 @@ namespace LeaveManagement.Web.Models
         
         [Required]
         [DisplayName("Start Date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
+        [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
         [Required]
         [DisplayName("End Date")]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}")]
+        [DataType(DataType.Date)]
         public DateTime? EndDate { get; set; }
         [Required]
         [DisplayName("Leave Type")]
