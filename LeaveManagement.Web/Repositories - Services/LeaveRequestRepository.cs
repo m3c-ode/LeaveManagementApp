@@ -5,8 +5,8 @@ using LeaveManagement.Web.Data;
 using LeaveManagement.Web.Models;
 using LeaveManagement.Web.Services_Repositories;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LeaveManagement.Web.Repositories___Services
 {
@@ -14,6 +14,7 @@ namespace LeaveManagement.Web.Repositories___Services
     {
         private readonly ApplicationDbContext context;
         private readonly IMapper mapper;
+        private readonly IEmailSender emailSender;
         private readonly AutoMapper.IConfigurationProvider configurationProvider;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ILeaveAllocationRepository leaveAllocationRepository;
@@ -21,6 +22,7 @@ namespace LeaveManagement.Web.Repositories___Services
 
         public LeaveRequestRepository(ApplicationDbContext context,
             IMapper mapper,
+            IEmailSender emailSender,
             AutoMapper.IConfigurationProvider configurationProvider,
             IHttpContextAccessor httpContextAccessor,
             ILeaveAllocationRepository leaveAllocationRepository,
@@ -29,6 +31,7 @@ namespace LeaveManagement.Web.Repositories___Services
         {
             this.context = context;
             this.mapper = mapper;
+            this.emailSender = emailSender;
             this.configurationProvider = configurationProvider;
             this.httpContextAccessor = httpContextAccessor;
             this.leaveAllocationRepository = leaveAllocationRepository;
@@ -42,8 +45,7 @@ namespace LeaveManagement.Web.Repositories___Services
             var leaveRequest = await GetAsync(leaveRequestId);
             if (leaveRequest == null)
             {
-               
-
+                throw new ArgumentNullException(nameof(leaveRequest), "Leave request not found.");
             }
             leaveRequest.Approved = approved;
             if (approved)
@@ -58,12 +60,21 @@ namespace LeaveManagement.Web.Repositories___Services
 
 
             }
-            else if(!approved)
+            else if (!approved)
             {
                 //leaveRequest.Approved = false;
                 leaveRequest.Cancelled = true;
             }
-                await UpdateAsync(leaveRequest);
+            await UpdateAsync(leaveRequest);
+
+            var user = await userManager.FindByIdAsync(leaveRequest.RequestingEmployeeId);
+
+            var approvalStatus = approved ? "Approved" : "Declined";
+
+            await emailSender.SendEmailAsync(user.Email, $"Leave Request {approvalStatus}", $"Your leave request from: " +
+    $"{leaveRequest.StartDate} to {leaveRequest.EndDate} has been {approvalStatus.ToLower()} ");
+
+
         }
 
         public async Task<bool> CreateLeaveRequest(LeaveRequestCreateVM model)
@@ -71,7 +82,7 @@ namespace LeaveManagement.Web.Repositories___Services
             var user = await userManager.GetUserAsync(httpContextAccessor?.HttpContext?.User);
 
             //Check if allocation allows taking number of days. Get employee leave alloc, compare days, return boolean
-            var allocation = await leaveAllocationRepository.GetEmployeeAllocation(model.RequestingEmployeeId, model.LeaveTypeId);
+            var allocation = await leaveAllocationRepository.GetEmployeeAllocation(user.Id, model.LeaveTypeId);
             //check is allocation is null
             if (allocation == null)
             {
@@ -86,8 +97,12 @@ namespace LeaveManagement.Web.Repositories___Services
             var leaveRequest = mapper.Map<LeaveRequest>(model);
             leaveRequest.DateCreated = DateTime.Now;
             leaveRequest.RequestingEmployeeId = user.Id;
-            
+
             await AddAsync(leaveRequest);
+
+            await emailSender.SendEmailAsync(user.Email, "Leave Request Submitted", $"Your leave request from: " +
+                $"{leaveRequest.StartDate} to {leaveRequest.EndDate} has been submitted for approval");
+
             return true;
         }
 
@@ -146,11 +161,18 @@ namespace LeaveManagement.Web.Repositories___Services
             return model;
         }
 
-        public async Task CancelRequest (int id)
+        public async Task CancelRequest(int id)
         {
             var leaveReq = await GetAsync(id);
             leaveReq.Cancelled = true;
             await UpdateAsync(leaveReq);
+
+            var user = await userManager.FindByIdAsync(leaveReq.RequestingEmployeeId);
+
+
+            await emailSender.SendEmailAsync(user.Email, $"Leave Request Cancelled", $"Your leave request from: " +
+$"{leaveReq.StartDate} to {leaveReq.EndDate} has been cancelled ");
+
         }
     }
 }
