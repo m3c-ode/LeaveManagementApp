@@ -101,7 +101,7 @@ namespace LeaveManagement.Web.Repositories___Services
             await AddAsync(leaveRequest);
 
             await emailSender.SendEmailAsync(user.Email, "Leave Request Submitted", $"Your leave request from: " +
-                $"{leaveRequest.StartDate} to {leaveRequest.EndDate} has been submitted for approval");
+                $"{model.StartDate} to {model.EndDate} has been submitted for approval");
 
             return true;
         }
