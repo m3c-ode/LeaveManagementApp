@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using LeaveManagement.Web.Data;
-using AutoMapper;
-using LeaveManagement.Web.Models;
-using LeaveManagement.Web.Contracts;
-using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
 using LeaveManagement.Web.Constants;
+using LeaveManagement.Web.Contracts;
+using LeaveManagement.Web.Data;
+using LeaveManagement.Web.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagement.Web.Controllers
 {
@@ -22,7 +17,7 @@ namespace LeaveManagement.Web.Controllers
         private readonly ILeaveAllocationRepository leaveAllocationRepository;
 
         //Copies the context into th Controller for intereaction with DB = dependancy injection
-        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, 
+        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository,
             IMapper mapper,
             ILeaveAllocationRepository leaveAllocationRepository
             )
@@ -74,8 +69,7 @@ namespace LeaveManagement.Web.Controllers
             {
                 //Need to map back to the Data Model
                 var leaveType = mapper.Map<LeaveType>(leaveTypeVM);
-                leaveType.DateCreated = DateTime.Now;
-                await leaveTypeRepository.AddAsync(leaveType);    
+                await leaveTypeRepository.AddAsync(leaveType);
                 return RedirectToAction(nameof(Index));
             }
             return View(leaveTypeVM);
@@ -105,13 +99,17 @@ namespace LeaveManagement.Web.Controllers
             {
                 return NotFound();
             }
-
+            //For the auditing, need to get original entry so that it can be modified properly.
+            var leaveType = await leaveTypeRepository.GetAsync(id);
+            if (leaveType == null)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var leaveType = mapper.Map<LeaveType>(leaveTypeVM);
-                    leaveType.DateUpdated = DateTime.Now;
+                    mapper.Map(leaveTypeVM, leaveType);
                     await leaveTypeRepository.UpdateAsync(leaveType);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -151,7 +149,7 @@ namespace LeaveManagement.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AllocateLeave (int id)
+        public async Task<IActionResult> AllocateLeave(int id)
         {
             await leaveAllocationRepository.LeaveAllocation(id);
             return RedirectToAction(nameof(Index));

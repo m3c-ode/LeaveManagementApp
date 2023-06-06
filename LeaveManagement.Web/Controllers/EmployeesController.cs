@@ -68,10 +68,6 @@ namespace LeaveManagement.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EditAllocation(int id, IFormCollection collection, LeaveAllocationEditVM model)
         {
-            foreach (var key in collection.Keys)
-            {
-                System.Diagnostics.Debug.WriteLine(key);
-            }
             try
             {
                 if (ModelState.IsValid)
