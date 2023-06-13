@@ -5,9 +5,7 @@
 }
 
 <div class="card" style="width: 100%;">
-    <div class="card-header">
-        <h2>Leave Allocations</h2>
-    </div>
+        <h2 style="padding: .75rem">Leave Allocations</h2>
     <ul class="list-group list-group-flush">
         <li class="list-group-item">
             <div class="row">
@@ -19,7 +17,6 @@
         </li>
         @foreach (var allocation in Model.LeaveAllocations)
         {
-            @*<li class="list-group-item">@allocation.LeaveType.Name <span class="badge badge-pill badge-primary">@allocation.NumberOfDays</span></li>*@
             <li class="list-group-item">
                 <div class="row">
                     <div class="col">
@@ -48,14 +45,12 @@
             </li>
 
         }
-        @*        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Vestibulum at eros</li>*@
     </ul>
 </div>
 
 <hr />
 
-<h2>Current Requests</h2>
+<h2 style="padding: .6rem; padding-left: 1rem">Current Requests</h2>
 <table class="table">
     <thead>
         <tr>
