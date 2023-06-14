@@ -53,7 +53,7 @@
         <header class="topbar" data-navbarbg="skin5">
             <nav class="navbar top-navbar navbar-expand-md navbar-dark">
                 <div class="navbar-header" data-logobg="skin5">
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="">
                         <!-- Logo icon -->
                         <b class="logo-icon">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
@@ -87,34 +87,12 @@
                                              class="rounded-circle" width="40" />
                                     </div>
                                     <div class="user-content hide-menu m-l-10">
-                                        <a href="#" class="" id="Userdd" role="button"
-                                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <h5 class="m-b-0 user-name font-medium">
-                                                @user.FirstName @user.LastName<i class="fa fa-angle-down"></i>
+                                                @user.FirstName @user.LastName
                                             </h5>
                                             <span style="display: block" class="op-5 user-email">
-                                                @user.Email
+                                                @user.Email</span>
                                                 <span style="display: block" class="op-5 user-email">@User.FindFirstValue(ClaimTypes.Role)</span>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="Userdd">
-                                            <a class="dropdown-item" href="javascript:void(0)">
-                                                <i class="ti-user m-r-5 m-l-5"></i> My Profile
-                                            </a>
-                                            <a class="dropdown-item" href="javascript:void(0)">
-                                                <i class="ti-wallet m-r-5 m-l-5"></i> My Balance
-                                            </a>
-                                            <a class="dropdown-item" href="javascript:void(0)">
-                                                <i class="ti-email m-r-5 m-l-5"></i> Inbox
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="javascript:void(0)">
-                                                <i class="ti-settings m-r-5 m-l-5"></i> Account Setting
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="javascript:void(0)">
-                                                <i class="fa fa-power-off m-r-5 m-l-5"></i> Logout
-                                            </a>
-                                        </div>
                                     </div>
                                 </div>
                             }

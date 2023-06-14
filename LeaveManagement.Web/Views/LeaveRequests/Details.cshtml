@@ -60,28 +60,25 @@
         </dd>
     </dl>
 </div>
-<div>
-
-    <div class="row">
+<div style="display: inherit">
         @if (Model.Approved == null)
         {
-            <div class="col">
-                <form class="form-inline" asp-action="ChangeRequestApproval">
+            <div>
+                <form asp-action="ChangeRequestApproval">
                     <input asp-for="Id" type="hidden" />
                     @*<input name="Id" type="hidden" value="@Model.Id" />*@
                     <input name="approved" type="hidden" value="true" />
-                    <button @*asp-route-approved="true"*@ type="submit" class="btn btn-success">Approve</button> |
+                <button @*asp-route-approved="true"*@ type="submit" class="btn btn-success">Approve</button>&nbsp;
                 </form>
             </div>
-            <div class="col">
-                <form class="col" asp-action="ChangeRequestApproval">
+        <div class="mx-2">
+                <form asp-action="ChangeRequestApproval">
                     <input asp-for="Id" type="hidden" />
                     @*<input name="Id" type="hidden" value="@Model.Id" />*@
                     <input name="approved" type="hidden" value="false" />
-                    <button @*asp-route-approved ="false"*@ type="submit" class="btn btn-danger">Reject</button> |
+                <button @*asp-route-approved ="false"*@ type="submit" class="btn btn-danger">Reject</button>&nbsp;
                 </form>
             </div>
         }
-        <div class="col"> <a asp-action="Index" class="btn btn-dark">Back to List</a> &nbsp;</div>
-    </div>
+    <div> <a asp-action="Index" class="btn btn-dark">Back to List</a> &nbsp;</div>
 </div>
