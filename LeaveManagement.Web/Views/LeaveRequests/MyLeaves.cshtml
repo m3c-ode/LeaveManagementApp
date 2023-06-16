@@ -89,7 +89,11 @@
                     @Html.DisplayFor(modelItem => item.DateCreated)
                 </td>
                 <td>
-                    @if (item.Approved == null)
+                    @if (item.Cancelled)
+                    {
+                        <span class="badge text-bg-secondary">Cancelled</span>
+                    }
+                    else if (item.Approved == null)
                     {
                         <span class="badge text-bg-warning">Pending</span>
                     }
@@ -101,15 +105,10 @@
                     {
                         <span class="badge text-bg-danger">Rejected</span>
                     }
-                    else if (item.Cancelled)
-                    {
-                        <span class="badge text-bg-secondary">Cancelled</span>
-
-                    }
                 </td>
                 <td>
                     @*<a asp-action="Cancel" class="btn btn-danger btn-sm" asp-route-id="@item.Id">Cancel Request</a>*@
-                    @if (item.Approved == null)
+                    @if (item.Approved == null && item.Cancelled == false)
                     {
                         <form id="deleteForm" asp-action="Cancel">
                             <input type="hidden" id="leaveRequestId" name="Id" @*asp-form="@item.Id"*@ />

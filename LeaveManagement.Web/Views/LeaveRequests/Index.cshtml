@@ -73,7 +73,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.LeaveRequests.Where(item => item.Approved == null))
+        @foreach (var item in Model.LeaveRequests.Where(item => item.Approved == null && !item.Cancelled))
         {
         <tr>
             <td>
@@ -147,7 +147,7 @@
     </thead>
     <tbody>
         
-        @foreach (var item in Model.LeaveRequests.Where(item => item.Approved != null))
+        @foreach (var item in Model.LeaveRequests.Where(item => item.Approved != null || item.Cancelled != null))
         {
                 <tr>
                     <td>
@@ -163,22 +163,22 @@
                         @Html.DisplayFor(modelItem => item.LeaveType.Name)
                     </td>
                     <td>
-                        @if (item.Approved == null)
-                        {
-                            <span class="badge text-bg-warning">Pending</span>
-                        }
-                        else if (item.Approved.Value)
-                        {
-                            <span class="badge text-bg-success">Approved</span>
-                        }
-                        else if (!item.Approved.Value)
-                        {
-                            <span class="badge text-bg-danger">Rejected</span>
-                        }
-                        else if (item.Cancelled)
-                        {
-                            <span class="badge text-bg-secondary">Cancelled</span>
-                        }
+                    @if (item.Cancelled)
+                    {
+                        <span class="badge text-bg-secondary">Cancelled</span>
+                    }
+                    else if (item.Approved == null)
+                    {
+                        <span class="badge text-bg-warning">Pending</span>
+                    }
+                    else if (item.Approved.Value)
+                    {
+                        <span class="badge text-bg-success">Approved</span>
+                    }
+                    else if (!item.Approved.Value)
+                    {
+                        <span class="badge text-bg-danger">Rejected</span>
+                    }
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.DateCreated)
