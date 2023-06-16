@@ -40,7 +40,7 @@ As an employee on this platform, you can:
 - Bootstrap: A popular CSS framework for styling and layout manipulation
 - External Services: Integration with email services for seamless communication and notifications
 - Version Control: Utilizing GitHub for source code version control
-- Deployment: Deployment to hosting platforms like Microsoft Azure
+- Deployment: Deployment to hosting platforms like Microsoft Azure, through a CI/CD pipeline using GitHub.
 
 ## Getting Started
 
@@ -52,6 +52,17 @@ To get started with the Employee Leave Manager application, follow these steps:
 4. Run the application locally or deploy it to a hosting platform.
 
 For detailed instructions on setting up and running the application, please refer to the documentation provided in the repository.
+
+Alternatively, you can test the application on the deployment link hosted on Azure below (in progress).
+
+## Deployment
+
+The Employee Leave Manager application has been successfully deployed using the following methods:
+
+- IIS (Internet Information Services): The application has been published and hosted on a local IIS server for testing purposes.
+- SQL Server: The application is integrated with a SQL Server database to store and manage data related to employees, leave types, and leave requests.
+- Microsoft Azure: The application has been deployed to Microsoft Azure cloud platform and can be accessed using the following address: [https://leavemanagementweb20230616123130.azurewebsites.net](https://leavemanagementweb20230616123130.azurewebsites.net)
+
 
 ## Contact
 

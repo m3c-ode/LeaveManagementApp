@@ -64,7 +64,6 @@ namespace LeaveManagement.Application.Repositories___Services
             else if (!approved)
             {
                 leaveRequest.Approved = false;
-                //leaveRequest.Cancelled = true;
             }
             await UpdateAsync(leaveRequest);
 
