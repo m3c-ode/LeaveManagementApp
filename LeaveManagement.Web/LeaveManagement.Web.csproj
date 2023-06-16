@@ -22,6 +22,12 @@
     <ProjectReference Include="..\LeaveManagement.Application\LeaveManagement.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.EntityFrameworkCore.SqlServer">
+      <HintPath>bin\Release\net7.0\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="https://json.schemastore.org/lintstagedrc.schema.json" /></VisualStudio></ProjectExtensions>
 
 </Project>
