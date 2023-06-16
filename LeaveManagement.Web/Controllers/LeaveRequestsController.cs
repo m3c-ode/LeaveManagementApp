@@ -33,6 +33,12 @@ namespace LeaveManagement.Web.Controllers
             return View(model);
             //var applicationDbContext = _context.LeaveRequests.Include(l => l.LeaveType).Include(l => l.RequestingEmployee);
             //return View(await applicationDbContext.ToListAsync());
+
+        }
+        public async Task<ActionResult> MyLeaves()
+        {
+            var model = await leaveRequestRepository.GetMyLeaveRequestDetails();
+            return View(model);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -50,12 +56,6 @@ namespace LeaveManagement.Web.Controllers
             }
             return RedirectToAction(nameof(MyLeaves));
 
-        }
-
-        public async Task<ActionResult> MyLeaves()
-        {
-            var model = await leaveRequestRepository.GetMyLeaveRequestDetails();
-            return View(model);
         }
 
         // GET: LeaveRequests/Details/5
