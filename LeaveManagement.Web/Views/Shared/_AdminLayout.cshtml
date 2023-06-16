@@ -80,19 +80,19 @@
                         <li>
                             @if (SignInManager.IsSignedIn(User))
                             {
-                                var user = await UserManager.GetUserAsync(User);
                                 <div class="user-profile d-flex no-block dropdown m-t-20">
                                     <div class="user-pic">
                                         <img src="~/images/users/1.jpg" alt="users"
                                              class="rounded-circle" width="40" />
                                     </div>
                                     <div class="user-content hide-menu m-l-10">
-                                            <h5 class="m-b-0 user-name font-medium">
-                                                @user.FirstName @user.LastName
-                                            </h5>
-                                            <span style="display: block" class="op-5 user-email">
-                                                @user.Email</span>
-                                                <span style="display: block" class="op-5 user-email">@User.FindFirstValue(ClaimTypes.Role)</span>
+                                        <h5 class="m-b-0 user-name font-medium">
+                                            @User.FindFirstValue(UserClaims.FullName)
+                                        </h5>
+                                        <span style="display: block" class="op-5 user-email">
+                                            @User.FindFirstValue(UserClaims.Email)
+                                        </span>
+                                        <span style="display: block" class="op-5 user-email">@User.FindFirstValue(ClaimTypes.Role)</span>
                                     </div>
                                 </div>
                             }
