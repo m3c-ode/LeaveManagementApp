@@ -106,13 +106,19 @@ namespace LeaveManagement.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(LeaveRequestCreateVM leaveRequestVM)
         {
+            logger.LogInformation("Entering the controller");
+
             try
             {
                 if (ModelState.IsValid)
                 {
+                    logger.LogInformation("Model is Valid");
+
                     var isReqValid = await leaveRequestRepository.CreateLeaveRequest(leaveRequestVM);
                     if (isReqValid)
                     {
+                    logger.LogInformation("Request is Valid, shoudl redirect to MyLeaves");
+
                         return RedirectToAction(nameof(MyLeaves));
                     }
                     ModelState.AddModelError(string.Empty, "Allocation limit is exceeded with this request");
@@ -120,6 +126,8 @@ namespace LeaveManagement.Web.Controllers
             }
             catch (Exception ex)
             {
+                logger.LogInformation(ex, "There was an error");
+
                 logger.LogError(ex, "Error creating leave request");
                 ModelState.AddModelError(string.Empty, "An error has occured. Please try again later");
             }

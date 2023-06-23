@@ -35,6 +35,17 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
 
+builder.Host.ConfigureLogging((ctx, lc) =>
+{
+    Log.Logger = new LoggerConfiguration()
+     .WriteTo.Console()
+     //.WriteTo.brows
+     .CreateLogger()
+});
+
+builder.Logging.AddSerilog()
+
+  
 
 builder.Services.AddControllersWithViews();
 
