@@ -8,12 +8,14 @@ namespace LeaveManagement.Web.Services
         private string smtpServer;
         private int smtpPort;
         private string fromEmailAddress;
+        private readonly ILogger<EmailSender> logger;
 
-        public EmailSender(string smtpServer, int smtpPort, string fromEmailAddress)
+        public EmailSender(string smtpServer, int smtpPort, string fromEmailAddress, ILogger<EmailSender> logger)
         {
             this.smtpServer = smtpServer;
             this.smtpPort = smtpPort;
             this.fromEmailAddress = fromEmailAddress;
+            this.logger = logger;
         }
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
@@ -27,11 +29,17 @@ namespace LeaveManagement.Web.Services
             };
 
             message.To.Add(new MailAddress(email));
+            try
+            {
 
             //initialize client
             using (var client = new SmtpClient(smtpServer, smtpPort))
             {
                 client.Send(message);
+            }
+            } catch (Exception ex)
+            {
+                logger.LogInformation("Error sending email", ex);
             }
 
             return Task.CompletedTask;
