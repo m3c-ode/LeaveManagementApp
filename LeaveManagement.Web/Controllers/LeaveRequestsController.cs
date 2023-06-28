@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace LeaveManagement.Web.Controllers
 {
@@ -107,7 +108,6 @@ namespace LeaveManagement.Web.Controllers
         public async Task<IActionResult> Create(LeaveRequestCreateVM leaveRequestVM)
         {
             logger.LogInformation("Entering the controller");
-
             try
             {
                 if (ModelState.IsValid)
@@ -117,7 +117,7 @@ namespace LeaveManagement.Web.Controllers
                     var isReqValid = await leaveRequestRepository.CreateLeaveRequest(leaveRequestVM);
                     if (isReqValid)
                     {
-                    logger.LogInformation("Request is Valid, shoudl redirect to MyLeaves");
+                    logger.LogInformation("Request is Valid, should redirect to MyLeaves");
 
                         return RedirectToAction(nameof(MyLeaves));
                     }
@@ -126,7 +126,6 @@ namespace LeaveManagement.Web.Controllers
             }
             catch (Exception ex)
             {
-                logger.LogInformation(ex, "There was an error");
 
                 logger.LogError(ex, "Error creating leave request");
                 ModelState.AddModelError(string.Empty, "An error has occured. Please try again later");

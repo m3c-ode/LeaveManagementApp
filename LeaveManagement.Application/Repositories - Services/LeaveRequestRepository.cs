@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace LeaveManagement.Application.Repositories___Services
 {
@@ -19,6 +20,7 @@ namespace LeaveManagement.Application.Repositories___Services
         private readonly AutoMapper.IConfigurationProvider configurationProvider;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly ILeaveAllocationRepository leaveAllocationRepository;
+        private readonly ILogger<LeaveRequestRepository> logger;
         private readonly UserManager<Employee> userManager;
 
         public LeaveRequestRepository(ApplicationDbContext context,
@@ -27,6 +29,7 @@ namespace LeaveManagement.Application.Repositories___Services
             AutoMapper.IConfigurationProvider configurationProvider,
             IHttpContextAccessor httpContextAccessor,
             ILeaveAllocationRepository leaveAllocationRepository,
+            ILogger<LeaveRequestRepository> logger,
             UserManager<Employee> userManager
             ) : base(context)
         {
@@ -36,6 +39,7 @@ namespace LeaveManagement.Application.Repositories___Services
             this.configurationProvider = configurationProvider;
             this.httpContextAccessor = httpContextAccessor;
             this.leaveAllocationRepository = leaveAllocationRepository;
+            this.logger = logger;
             this.userManager = userManager;
             //Check if accepted
         }
@@ -100,8 +104,17 @@ namespace LeaveManagement.Application.Repositories___Services
 
             await AddAsync(leaveRequest);
 
-            await emailSender.SendEmailAsync(user.Email, "Leave Request Submitted", $"Your leave request from: " +
-                $"{model.StartDate} to {model.EndDate} has been submitted for approval");
+            try
+            {
+
+                await emailSender.SendEmailAsync(user.Email, "Leave Request Submitted", $"Your leave request from: " +
+                    $"{model.StartDate} to {model.EndDate} has been submitted for approval");
+            }
+            catch (Exception ex)
+            {
+                logger.LogInformation("Error with email sender", ex);
+
+            }
 
             return true;
         }
