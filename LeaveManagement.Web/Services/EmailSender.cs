@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Net.Mail;
 
 namespace LeaveManagement.Web.Services
@@ -10,12 +11,13 @@ namespace LeaveManagement.Web.Services
         private string fromEmailAddress;
         private readonly ILogger<EmailSender> logger;
 
-        public EmailSender(string smtpServer, int smtpPort, string fromEmailAddress, ILogger<EmailSender> logger)
+        public EmailSender(string smtpServer, int smtpPort, string fromEmailAddress, 
+            ILogger<EmailSender> logger)
         {
             this.smtpServer = smtpServer;
             this.smtpPort = smtpPort;
             this.fromEmailAddress = fromEmailAddress;
-            this.logger = logger;
+            this.logger = logger ?? NullLogger<EmailSender>.Instance;
         }
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
@@ -39,7 +41,7 @@ namespace LeaveManagement.Web.Services
             }
             } catch (Exception ex)
             {
-                logger.LogInformation("Error sending email", ex);
+                logger.LogInformation("Error sending emailim Email Sender", ex);
             }
 
             return Task.CompletedTask;

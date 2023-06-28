@@ -112,7 +112,7 @@ namespace LeaveManagement.Application.Repositories___Services
             }
             catch (Exception ex)
             {
-                logger.LogInformation("Error with email sender", ex);
+                logger.LogInformation("Error with email sender in Create LRRepo", ex);
 
             }
 
