@@ -12,7 +12,7 @@ namespace LeaveManagement.Web.Services
         private readonly ILogger<EmailSender> logger;
 
         public EmailSender(string smtpServer, int smtpPort, string fromEmailAddress, 
-            ILogger<EmailSender> logger)
+            ILogger<EmailSender>? logger = null)
         {
             this.smtpServer = smtpServer;
             this.smtpPort = smtpPort;
