@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using LeaveManagement.Web.Services.Identity;
+using LeaveManagement.Web.Controllers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,14 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));  
 
 builder.Services.AddControllersWithViews();
+
+//builder.Services.AddMvc(options =>
+//{
+//    options.EnableEndpointRouting = false;
+//    //options.Filters.Add(typeof(ValidateAntiForgeryTokenFilter)); // Optional: If you have an anti-forgery token filter
+//})
+//    .AddRazorRuntimeCompilation()
+//    .AddApplicationPart(typeof(DemoLoginController).Assembly); // Add this line
 
 var app = builder.Build();
 

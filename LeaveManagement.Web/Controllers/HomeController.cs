@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
 using System.Diagnostics;
 
 namespace LeaveManagement.Web.Controllers
@@ -12,7 +13,7 @@ namespace LeaveManagement.Web.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
-            _logger = logger;
+            this._logger = logger;
         }
 
         public IActionResult Index()

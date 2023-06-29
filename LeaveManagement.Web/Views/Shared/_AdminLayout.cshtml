@@ -101,7 +101,7 @@
                             {
                             <li class="p-15 m-t-10">
                                 <a class="btn d-block w-100 create-btn text-white no-block d-flex align-items-center"
-                               asp-area="Identity" asp-page="/Account/Register">
+                                   asp-area="Identity" asp-page="/Account/Register">
                                     <i class="fa fa-plus-square"></i> <span class="hide-menu m-l-5">Register</span>
                                 </a>
                             </li>
@@ -110,6 +110,13 @@
                                     <i class="fa fa-plus-square"></i> <span class="hide-menu m-l-5">Login</span>
                                 </a>
                             </li>
+                            <li class="p-15">
+                                <a id="demo" class="btn d-block w-100 create-btn text-white no-block d-flex align-items-center" asp-area="" asp-page="">
+                                    <i class="fa fa-plus-square"></i> <span class="hide-menu m-l-5">Demo</span>
+                                </a>
+                            </li>
+
+
                             }
                         </li>
 
@@ -122,14 +129,14 @@
                         {
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                               asp-area="" asp-controller="LeaveRequests" asp-action="Create">
+                                   asp-area="" asp-controller="LeaveRequests" asp-action="Create">
                                     <i class="fa-solid fa-file-pen me-2"></i>
                                     <span class="hide-menu">Apply For Leave</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                               asp-area="" asp-controller="LeaveRequests" asp-action="MyLeaves">
+                                   asp-area="" asp-controller="LeaveRequests" asp-action="MyLeaves">
                                     <i class="fa-solid fa-list me-2"></i>
                                     <span class="hide-menu">My Leaves</span>
                                 </a>
@@ -139,19 +146,19 @@
                         {
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                               asp-area="" asp-controller="Employees" asp-action="Index">
+                                   asp-area="" asp-controller="Employees" asp-action="Index">
                                     <i class="fa-solid fa-users me-2"></i><span class="hide-menu">Employee Management</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                               asp-area="" asp-controller="LeaveTypes" asp-action="Index">
+                                   asp-area="" asp-controller="LeaveTypes" asp-action="Index">
                                     <i class="fa-solid fa-gears me-2"></i><span class="hide-menu">Leave Type</span>
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link waves-effect waves-dark sidebar-link"
-                               asp-area="" asp-controller="LeaveRequests" asp-action="Index">
+                                   asp-area="" asp-controller="LeaveRequests" asp-action="Index">
                                     <i class="fa-solid fa-list-check me-2"></i><span class="hide-menu">Leave Requests</span>
                                 </a>
                             </li>
@@ -161,7 +168,7 @@
 
                             <li class="text-center p-40 upgrade-btn">
                                 <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout"
-                                  asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                      asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                                     <button type="submit" class="btn d-block w-100 btn-danger text-white">Logout</button>
                                 </form>
                             </li>
@@ -177,6 +184,16 @@
                     @RenderBody()
 
                 </div>
+                @if (!SignInManager.IsSignedIn(User))
+                {
+                    <form id="adminLoginForm" method="post" asp-controller="DemoLogin" asp-action="AdminLogin"></form>
+                    @*<form id="employeeLoginForm" method="post" asp-controller="DemoLogin" asp-action="EmployeeLogin">
+                <p>Employee Testing form</p>@*
+                <input name="__RequestVerificationToken" id="token" type="hidden" value="@Html.AntiForgeryToken()" />
+                </form>*@
+                    @*<form method="post"></form>*@
+
+                }
             </div>
             <footer class="footer text-center">
                 &copy; @DateTime.Now.Year - Employee Leave Manager | Themed by <a href="https://www.wrappixel.com">WrapPixel</a>
@@ -191,14 +208,59 @@
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <script>
         $(function () {
-            //Initialise the Datatable format accross all table classed items
+            //Initialise the Datatable format across all table classed items
             $('.table').DataTable();
             //Configure format
             $(".datepicker").datepicker({
                 dateFormat: "yy-mm-dd"
             });
+            $("#demo").click(function (e) {
+                e.preventDefault();
+                swal({
+                    title: 'Choose login type',
+                    text: "Choose to login as an Administrator or an Employee",
+                    buttons: {
+                        admin: {
+                            text: "Admin",
+                            value: "admin"
+                        },
+                        user: {
+                            text: "Employee",
+                            value: "user"
+                        },
+                        cancel: "Cancel"
+                    },
+                }).then((value) => {
+                    // figured 2 ways, one using jQuery.Ajax
+                    if (value == "admin") {
+                        // Call the adminLogin function when admin is selected
+                        $("#adminLoginForm").submit();
+                    } else if (value == "user") {
+                        // Call the employeeLogin function when user is selected
+                        employeeLogin();
+                    }
+                });
+            });
 
-        })
+        //Gets the Antiforgery token, from the form creating a hidden input with name
+        var token = $('input[name="__RequestVerificationToken"]').val();
+
+        function employeeLogin() {
+            $.ajax({
+                url: "/DemoLogin/EmployeeLogin",
+                type: "POST",
+                headers: { "RequestVerificationToken": token },
+                success: function () {
+                    // Redirect to the admin dashboard upon successful login
+                    window.location.href = "/";
+                },
+                error: function () {
+                    // Display an error message or perform any other necessary action
+                    swal("Error", "Invalid login attempt", "error");
+                }
+            });
+        }
+                });
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
