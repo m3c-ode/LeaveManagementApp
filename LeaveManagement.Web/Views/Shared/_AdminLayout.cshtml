@@ -187,11 +187,6 @@
                 @if (!SignInManager.IsSignedIn(User))
                 {
                     <form id="adminLoginForm" method="post" asp-controller="DemoLogin" asp-action="AdminLogin"></form>
-                    @*<form id="employeeLoginForm" method="post" asp-controller="DemoLogin" asp-action="EmployeeLogin">
-                <p>Employee Testing form</p>@*
-                <input name="__RequestVerificationToken" id="token" type="hidden" value="@Html.AntiForgeryToken()" />
-                </form>*@
-                    @*<form method="post"></form>*@
 
                 }
             </div>
