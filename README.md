@@ -61,7 +61,7 @@ The Employee Leave Manager application has been successfully deployed using the 
 
 - IIS (Internet Information Services): The application has been published and hosted on a local IIS server for testing purposes.
 - SQL Server: The application is integrated with a SQL Server database to store and manage data related to employees, leave types, and leave requests.
-- Microsoft Azure: The application has been deployed to Microsoft Azure cloud platform and can be accessed using the following address: [https://leavemanagementweb20230616123130.azurewebsites.net](https://leavemanagementweb20230616123130.azurewebsites.net)
+- Microsoft Azure: The application has been deployed to Microsoft Azure cloud platform and can be accessed using the following address: [https://leavemanagementweb20230616123130.azurewebsites.net](https://leavemanagementweb20230616123130.azurewebsites.net). Currently offline due to subscription change.
 
 
 ## Contact
