@@ -6,6 +6,19 @@ An ASP.NET Core and Entity Framework based web application for managing employee
 
 This web-based application is a simulation application designed to help administrators manage the leaves of their employees. It provides a user-friendly interface for administrators and employees to perform various actions related to leave management.
 
+## Screenshots
+
+- Login page
+  ![Login-page](https://github.com/m3c-ode/LeaveManagementApp/blob/main/Screenshots/elm-1.png)
+- Admin view
+  ![Admin-page](https://github.com/m3c-ode/LeaveManagementApp/blob/main/Screenshots/elm-2.png)
+- Employee Management view
+  ![employee-Management-page](https://github.com/m3c-ode/LeaveManagementApp/blob/main/Screenshots/elm-3.png)
+- Leave Types
+  ![Leave-types-page](https://github.com/m3c-ode/LeaveManagementApp/blob/main/Screenshots/elm-4.png)
+- Employee view dashboard
+  ![Employee-view-page](https://github.com/m3c-ode/LeaveManagementApp/blob/main/Screenshots/elm-5.png)
+
 ### Administrator Features
 
 As an administrator on this platform, you can:
@@ -62,7 +75,6 @@ The Employee Leave Manager application has been successfully deployed using the 
 - IIS (Internet Information Services): The application has been published and hosted on a local IIS server for testing purposes.
 - SQL Server: The application is integrated with a SQL Server database to store and manage data related to employees, leave types, and leave requests.
 - Microsoft Azure: The application has been deployed to Microsoft Azure cloud platform and can be accessed using the following address: [https://leavemanagementweb20230616123130.azurewebsites.net](https://leavemanagementweb20230616123130.azurewebsites.net). Currently offline due to subscription change.
-
 
 ## Contact
 
